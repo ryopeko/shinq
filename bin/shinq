@@ -1,3 +1,7 @@
 #!/usr/bin/env ruby
 
-require 'shinq'
+require_relative '../lib/shinq/cli'
+
+Shinq::CLI.new
+
+
