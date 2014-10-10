@@ -1,0 +1,20 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  username: root
+  password:
+  host: localhost
+
+development:
+  <<: *default
+  port: 3306
+  socket: /tmp/mysql.sock1
+  database: shinq_development
+
+queue_development:
+  <<: *default
+  port: 3308
+  socket: /tmp/mysql.sock3
+  database: my_queue
+
