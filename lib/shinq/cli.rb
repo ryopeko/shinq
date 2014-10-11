@@ -1,5 +1,6 @@
 require 'optparse'
 require 'yaml'
+require 'shinq'
 
 module Shinq
   class OptionParseError < StandardError; end
@@ -7,6 +8,7 @@ module Shinq
   class CLI
     def initialize(args=ARGV)
       parse_options(args)
+      setup_db_connection
     end
 
     def parse_options(args)
@@ -33,6 +35,10 @@ module Shinq
 
     def db_settings
       @opts[:queue_db_settings]
+    end
+
+    def setup_db_connection
+      Shinq.setup_db_connection(db_settings)
     end
   end
 end

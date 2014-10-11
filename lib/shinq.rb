@@ -14,4 +14,12 @@ module Shinq
   def self.q4m_config
     @q4m_config
   end
+
+  def self.setup_db_connection(db_config)
+    @conn = Mysql2::Client.new(db_config)
+  end
+
+  def self.conn
+    @conn
+  end
 end
