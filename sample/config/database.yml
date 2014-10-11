@@ -16,5 +16,5 @@ queue_development:
   <<: *default
   port: 3308
   socket: /tmp/mysql.sock3
-  database: my_queue
+  database: queue_test
 
