@@ -1,8 +1,9 @@
-require "shinq/version"
 require "mysql2"
 require "shinq/client"
 
 module Shinq
+  VERSION = Gem.loaded_specs['shinq'].version.to_s
+
   def self.configure_server
     yield self
   end
