@@ -9,6 +9,7 @@ module Shinq
     def initialize(args=ARGV)
       parse_options(args)
       setup_db_connection
+      bootstrap
     end
 
     def parse_options(args)
@@ -27,6 +28,10 @@ module Shinq
           raise OptionParseError, "#{v}'s settings does not exist" unless @opts[:db_config][v]
           @opts[:queue_db_settings] = @opts[:db_config][v]
         end
+
+        opt.on('--require VALUE') do |v|
+          @opts[:require] = v
+        end
       end
 
       parser.parse!(args)
@@ -39,6 +44,20 @@ module Shinq
 
     def setup_db_connection
       Shinq.setup_db_connection(db_settings)
+    end
+
+    def bootstrap
+      return unless @opts[:require]
+
+      if File.directory?(@opts[:require])
+        require 'rails'
+        require File.expand_path("#{@opts[:require]}/config/application.rb")
+        require File.expand_path("#{@opts[:require]}/config/environment.rb")
+      else
+        require @opts[:require]
+      end
+    end
+
     end
   end
 end
