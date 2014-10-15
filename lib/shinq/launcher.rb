@@ -17,6 +17,8 @@ module Shinq
         Shinq::Client.abort
         raise
       end
+
+      Shinq::Client.done
     end
   end
 end
