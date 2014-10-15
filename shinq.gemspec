@@ -6,10 +6,9 @@ Gem::Specification.new do |spec|
   spec.name          = "shinq"
   spec.version       = '0.0.1'
   spec.authors       = ["Ryoichi SEKIGUCHI"]
-  spec.email         = ["ryopeko+free@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.email         = ["ryopeko@gmail.com"]
+  spec.summary       = %q{Worker and enqueuer for Q4M using the interface of ActiveJob.}
+  spec.homepage      = "https://github.com/ryopeko/shinq"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
