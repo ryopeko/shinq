@@ -33,6 +33,10 @@ module Shinq
       results.first
     end
 
+    def self.done
+      Shinq.connection.query('select queue_end()')
+    end
+
     def self.abort
       Shinq.connection.query('select queue_abort()')
     end
