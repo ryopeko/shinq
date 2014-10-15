@@ -8,7 +8,7 @@ module Shinq
   class CLI
     def initialize(args=ARGV)
       parse_options(args)
-      setup_db_connection
+      setup_db_config
       bootstrap
     end
 
@@ -26,6 +26,7 @@ module Shinq
 
         opt.on('--queue-database VALUE') do |v|
           raise OptionParseError, "#{v}'s settings does not exist" unless @opts[:db_config][v]
+          @opts[:queue_db] = v
           @opts[:queue_db_settings] = @opts[:db_config][v]
         end
 
@@ -38,12 +39,9 @@ module Shinq
       @opts
     end
 
-    def db_settings
-      @opts[:queue_db_settings]
-    end
-
-    def setup_db_connection
-      Shinq.setup_db_connection(db_settings)
+    def setup_db_config
+      Shinq.default_db = @opts[:queue_db]
+      Shinq.db_config = @opts[:db_config]
     end
 
     def bootstrap
