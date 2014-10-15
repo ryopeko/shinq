@@ -51,6 +51,8 @@ module Shinq
       if File.directory?(@opts[:require])
         require 'rails'
         require File.expand_path("#{@opts[:require]}/config/application.rb")
+
+        require 'shinq/rails'
         require File.expand_path("#{@opts[:require]}/config/environment.rb")
       else
         require @opts[:require]
