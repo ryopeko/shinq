@@ -2,6 +2,6 @@
 
 require_relative '../lib/shinq/cli'
 
-Shinq::CLI.new
+Shinq::CLI.new.run
 
 

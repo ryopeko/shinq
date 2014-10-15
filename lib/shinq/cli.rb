@@ -1,6 +1,7 @@
 require 'optparse'
 require 'yaml'
 require 'shinq'
+require 'shinq/launcher'
 
 module Shinq
   class OptionParseError < StandardError; end
@@ -56,6 +57,8 @@ module Shinq
       end
     end
 
+    def run
+      Shinq::Launcher.new(@opts[:worker_name]).run
     end
   end
 end
