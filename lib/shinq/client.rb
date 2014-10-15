@@ -7,9 +7,19 @@ module Shinq
     end
 
     def self.enqueue(table_name: , args:)
-      sql, bind = builder.insert(table_name, args)
+      case args
+      when Hash
+        sql, bind = builder.insert(table_name, args)
+        Shinq.connection.xquery(sql, bind)
+      when Array
+        args.each do |queue|
+          sql, bind = builder.insert(table_name, queue)
 
-      Shinq.connection.xquery(sql, bind)
+          Shinq.connection.xquery(sql, bind)
+        end
+      else
+        raise ArgumentError, "queue should be Array[Hash] or Hash"
+      end
     end
 
     def self.dequeue(table_name:)

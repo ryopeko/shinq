@@ -1,4 +1,5 @@
 require "mysql2-cs-bind"
+require 'shinq/client'
 
 module Shinq
   VERSION = Gem.loaded_specs['shinq'].version.to_s
@@ -17,7 +18,7 @@ module Shinq
   end
 
   def self.default_db
-    @default_db
+    @default_db || ENV['RACK_ENV'] || ENV['RAILS_ENV']
   end
 
 
@@ -30,3 +31,5 @@ module Shinq
     @connections[db_name] ||= setup_db_connection(db_name)
   end
 end
+
+require 'shinq/rails' if defined?(::Rails::Engine)
