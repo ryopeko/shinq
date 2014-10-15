@@ -12,7 +12,7 @@ module Shinq
       queue = Shinq::Client.dequeue(table_name: @worker_name.pluralize)
 
       begin
-        @worker_class.new(queue).perform
+        @worker_class.new.perform(queue)
       rescue => e
         Shinq::Client.abort
         raise
