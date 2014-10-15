@@ -34,7 +34,7 @@ module Shinq
     end
 
     def self.abort
-      Shinq.connection.xquery('select queue_abort()')
+      Shinq.connection.query('select queue_abort()')
     end
   end
 end
