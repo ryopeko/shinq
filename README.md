@@ -1,6 +1,6 @@
 # Shinq
 
-TODO: Write a gem description
+Worker and enqueuer for Q4M using the interface of ActiveJob.
 
 ## Installation
 
@@ -18,9 +18,35 @@ Or install it yourself as:
 
     $ gem install shinq
 
+[Install Q4M](http://q4m.github.io/install.html)
+
 ## Usage
 
-TODO: Write usage instructions here
+### Initialize
+```ruby
+Rails.application.configure do
+  config.active_job.queue_adapter = :shinq
+end
+```
+
+### Worker
+```ruby
+class FooWorker < ActiveJob::Base
+  aueue_as :my_queues #name of queue table
+
+  def perform(args)
+    #perform asynchronous
+  end
+end
+```
+
+### Enqueue
+```ruby
+FooWorker.perform_later(foo: 'bar', baz: 'qux')
+```
+
+### Worker execution
+TBD
 
 ## Contributing
 
