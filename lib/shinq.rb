@@ -1,4 +1,4 @@
-require "mysql2-cs-bind"
+require 'mysql2'
 require 'shinq/client'
 
 module Shinq
