@@ -4,6 +4,14 @@ require 'shinq/client'
 module Shinq
   VERSION = Gem.loaded_specs['shinq'].version.to_s
 
+  def self.configuration=(config)
+    @configuration = config
+  end
+
+  def self.configuration
+    @configuration
+  end
+
   def self.db_config=(config)
     @db_config = config
     @connections = {}
