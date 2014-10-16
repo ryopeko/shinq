@@ -29,7 +29,6 @@ module Shinq
     @default_db || ENV['RACK_ENV'] || ENV['RAILS_ENV']
   end
 
-
   def self.setup_db_connection(db_name)
     @connection ||= {}
     @connections[db_name] = Mysql2::Client.new(db_config[db_name])
