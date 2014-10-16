@@ -1,21 +1,22 @@
 require 'sql-maker'
+require 'sql/maker/quoting'
 
 module Shinq
   class Client
     def self.builder
-      @builder ||= SQL::Maker.new(driver: 'mysql')
+      @builder ||= SQL::Maker.new(driver: 'mysql', auto_bind: true)
     end
 
     def self.enqueue(table_name: , args:)
       case args
       when Hash
-        sql, bind = builder.insert(table_name, args)
-        Shinq.connection.xquery(sql, bind)
+        sql = builder.insert(table_name, args)
+        Shinq.connection.query(sql)
       when Array
         args.each do |queue|
-          sql, bind = builder.insert(table_name, queue)
+          sql = builder.insert(table_name, queue)
 
-          Shinq.connection.xquery(sql, bind)
+          Shinq.connection.query(sql)
         end
       else
         raise ArgumentError, "queue should be Array[Hash] or Hash"
@@ -23,11 +24,12 @@ module Shinq
     end
 
     def self.dequeue(table_name:)
-      has_queue = Shinq.connection.xquery('select queue_wait(?)', table_name)
+      quoted = SQL::Maker::Quoting.quote(table_name)
+      has_queue = Shinq.connection.query("select queue_wait(#{quoted})").first
 
       if has_queue
-        sql = builder.select(table_name, ['*']).first
-        results = Shinq.connection.xquery(sql)
+        sql = builder.select(table_name, ['*'])
+        results = Shinq.connection.query(sql)
       end
 
       results.first
