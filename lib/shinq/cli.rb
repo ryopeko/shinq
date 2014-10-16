@@ -34,7 +34,6 @@ module Shinq
         opt.on('--queue-database VALUE') do |v|
           raise OptionParseError, "#{v}'s settings does not exist" unless opts[:db_config][v]
           opts[:queue_db] = v
-          opts[:queue_db_settings] = opts[:db_config][v]
         end
 
         opt.on('--require VALUE') do |v|
