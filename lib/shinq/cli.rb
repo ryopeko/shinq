@@ -57,7 +57,6 @@ module Shinq
     end
 
     def bootstrap
-      return unless options.require
       target = options.require
 
       if File.directory?(target)
