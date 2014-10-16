@@ -1,4 +1,5 @@
 require 'shinq/active_job/queue_adapters/shinq_adapter'
+require 'shinq/configuration'
 
 module Shinq
   class Rails < ::Rails::Engine
@@ -7,8 +8,8 @@ module Shinq
     end
 
     def self.rails_bootstrap
-      Shinq.db_config = ActiveRecord::Base.configurations
-      Shinq.default_db = ::Rails.env
+      Shinq.configuration.db_config = ActiveRecord::Base.configurations
+      Shinq.configuration.default_db = ::Rails.env
     end
   end
 end

@@ -10,7 +10,6 @@ module Shinq
   class CLI
     def initialize(args=ARGV)
       setup_option(args)
-      setup_db_config
       bootstrap
     end
 
@@ -49,11 +48,6 @@ module Shinq
 
     def options
       Shinq.configuration
-    end
-
-    def setup_db_config
-      Shinq.default_db = options.queue_db
-      Shinq.db_config = options.db_config
     end
 
     def bootstrap
