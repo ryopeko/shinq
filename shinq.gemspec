@@ -19,6 +19,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "pry"
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec-mocks"
+  spec.add_development_dependency "simplecov"
 
   spec.add_dependency "mysql2", "~> 0.3.16"
   spec.add_dependency "sql-maker", "~> 0.0.4"
