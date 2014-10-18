@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'shinq'
+require 'shinq/configuration'
 
 describe Shinq do
   subject { Shinq }
