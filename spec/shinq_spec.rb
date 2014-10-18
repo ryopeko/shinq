@@ -8,7 +8,6 @@ describe Shinq do
   it { is_expected.to respond_to(:configuration=) }
 
   describe ".configuration" do
-
     context "when configuration is not present" do
       let(:shinq) { Shinq }
 
