@@ -25,4 +25,15 @@ describe Shinq do
     end
   end
 
+  describe ".configuration=" do
+    context "when specify args" do
+      let(:shinq) { Shinq }
+      let(:args) { Hash.new }
+
+      it 'is expect to return specified args' do
+        expect(shinq.configuration=(args)).to eq args
+      end
+      it { expect(shinq.configuration).to eq args }
+    end
+  end
 end
