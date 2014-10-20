@@ -1,5 +1,6 @@
 require 'rspec/mocks/standalone'
 require 'simplecov'
+require 'yaml'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter
@@ -20,4 +21,8 @@ RSpec.configure do |config|
 
   config.order = :random
   Kernel.srand config.seed
+end
+
+def load_database_config
+  YAML.load_file(File.expand_path('./config/database.yml', __dir__))
 end

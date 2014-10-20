@@ -1,0 +1,5 @@
+test:
+  encoding: utf8
+  username: root
+  host: localhost
+  database: shinq_test
