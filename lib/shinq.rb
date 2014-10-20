@@ -6,7 +6,12 @@ module Shinq
   VERSION = Gem.loaded_specs['shinq'].version.to_s
 
   def self.configuration=(config)
-    @configuration = config
+    @configuration = case config
+    when Shinq::Configuration
+      config
+    else
+      Shinq::Configuration.new(config)
+    end
   end
 
   def self.configuration

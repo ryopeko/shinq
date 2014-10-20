@@ -26,7 +26,7 @@ describe Shinq do
         }
       }
 
-      it { expect(shinq.configuration).to be_a_kind_of(Hash) }
+      it { expect(shinq.configuration).to be_a_kind_of(Shinq::Configuration) }
     end
   end
 
