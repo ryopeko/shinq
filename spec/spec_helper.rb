@@ -1,6 +1,7 @@
 require 'rspec/mocks/standalone'
 require 'simplecov'
 require 'yaml'
+require 'active_support/core_ext/hash'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter
@@ -23,6 +24,10 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 end
 
-def load_database_config
-  YAML.load_file(File.expand_path('./config/database.yml', __dir__))
+def load_database_config(klass)
+  db_config = YAML.load_file(File.expand_path('./config/database.yml', __dir__)).symbolize_keys
+  klass.configuration = {
+    db_config: db_config,
+    default_db: :test
+  }
 end

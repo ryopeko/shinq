@@ -53,4 +53,22 @@ describe Shinq do
       expect(shinq.db_config).to eq db_config
     end
   end
+
+  describe ".connection" do
+    context "when db_config is present" do
+      let(:shinq) { shinq_class }
+
+      it { expect{ shinq.connection }.to raise_error(Shinq::ConfigurationError) }
+    end
+
+    context "when db_config is not preset" do
+      let(:shinq) {
+        shinq_class.tap {|s|
+          load_database_config(s)
+        }
+      }
+
+      it { expect(shinq.connection(db_name: :test)).to be_a_kind_of(Mysql2::Client) }
+    end
+  end
 end
