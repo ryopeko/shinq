@@ -11,5 +11,9 @@ module Shinq
         send(:"#{k}=", opts[k] || DEFAULT[k])
       end
     end
+
+    def db_defined?(db_name)
+      !!(db_config && db_config[db_name])
+    end
   end
 end

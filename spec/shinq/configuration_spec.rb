@@ -25,4 +25,38 @@ describe Shinq::Configuration do
       it { expect {configuration.worker_name}.not_to raise_error() }
     end
   end
+
+  describe "#db_defined?" do
+    context "when db_config is present" do
+      let (:configuration) { Shinq::Configuration.new({}) }
+
+      it { expect(configuration.db_defined?(:test)).to be false }
+    end
+
+    context "when db_config is not present" do
+      context "when db_config does not have a value by specified key" do
+        let (:configuration) {
+          Shinq::Configuration.new(
+            db_config: {
+              test: 'foo'
+            }
+          )
+        }
+
+        it { expect(configuration.db_defined?(:foo)).to be false }
+      end
+
+      context "when db_config has a value by specified key" do
+        let (:configuration) {
+          Shinq::Configuration.new(
+            db_config: {
+              test: 'foo'
+            }
+          )
+        }
+
+        it { expect(configuration.db_defined?(:test)).to be true }
+      end
+    end
+  end
 end
