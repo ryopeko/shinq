@@ -26,6 +26,26 @@ describe Shinq::Configuration do
     end
   end
 
+  describe "#default_db_config" do
+    context "when default_db is present" do
+      let(:configuration) { Shinq::Configuration.new({}) }
+
+      it {expect { configuration.default_db_config }.to raise_error(Shinq::ConfigurationError)}
+    end
+
+    context "when default_db's config is present" do
+      let(:configuration) { Shinq::Configuration.new(default_db: :foo) }
+
+      it {expect { configuration.default_db_config }.to raise_error(Shinq::ConfigurationError)}
+    end
+
+    context "when default_db's config is present" do
+      let(:configuration) { Shinq::Configuration.new(default_db: :test) }
+
+      it {expect { configuration.default_db_config }.to raise_error(Shinq::ConfigurationError)}
+    end
+  end
+
   describe "#db_defined?" do
     context "when db_config is present" do
       let (:configuration) { Shinq::Configuration.new({}) }

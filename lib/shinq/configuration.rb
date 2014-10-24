@@ -15,7 +15,7 @@ module Shinq
     end
 
     def default_db_config
-      raise ConfigurationError if !default_db && db_defined?(default_db)
+      raise ConfigurationError if !(default_db && db_defined?(default_db))
       db_config[default_db]
     end
 
