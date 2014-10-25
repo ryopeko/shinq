@@ -41,19 +41,6 @@ describe Shinq do
     end
   end
 
-  describe ".db_config" do
-    let(:db_config) { Hash.new }
-    let(:shinq) {
-      shinq_class.tap {|s|
-        s.configuration = Shinq::Configuration.new(db_config: db_config)
-      }
-    }
-
-    it 'is expect to return specified args' do
-      expect(shinq.db_config).to eq db_config
-    end
-  end
-
   describe ".connection" do
     context "when db_config is present" do
       let(:shinq) { shinq_class }
