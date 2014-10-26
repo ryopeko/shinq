@@ -25,7 +25,7 @@ module Shinq
 
     def self.dequeue(table_name:)
       quoted = SQL::Maker::Quoting.quote(table_name)
-      has_queue = Shinq.connection.query("select queue_wait(#{quoted}, '', 10)").first
+      has_queue = Shinq.connection.query("select queue_wait(#{quoted}, 1)").first
 
       if has_queue
         sql = builder.select(table_name, ['*'])
