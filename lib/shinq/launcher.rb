@@ -1,6 +1,5 @@
 require 'shinq/client'
 require 'active_support/inflector'
-require 'awesome_print'
 
 module Shinq
   module Launcher
@@ -10,7 +9,8 @@ module Shinq
 
       until @stop
         queue = Shinq::Client.dequeue(table_name: worker_name.pluralize)
-        next unless queue
+        #TODO use logger
+        next p "Queue is empty (#{Time.now})" unless queue
 
         begin
           worker_class.new.perform(queue)
