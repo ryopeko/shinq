@@ -3,6 +3,7 @@ require 'yaml'
 require 'shinq'
 require 'shinq/launcher'
 require 'shinq/configuration'
+require 'serverengine'
 
 module Shinq
   class OptionParseError < StandardError; end
@@ -64,7 +65,14 @@ module Shinq
     end
 
     def run
-      Shinq::Launcher.new(options.worker_name).run
+      se = ServerEngine.create(nil, Shinq::Launcher, {
+        daemonize: false,
+        worker_type: 'process',
+        pid_file: 'shinq.pid',
+        workers: 1
+      })
+
+      se.run
     end
   end
 end
