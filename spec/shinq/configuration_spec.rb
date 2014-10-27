@@ -10,6 +10,7 @@ describe Shinq::Configuration do
     it { is_expected.to respond_to(:db_config) }
     it { is_expected.to respond_to(:queue_db) }
     it { is_expected.to respond_to(:default_db) }
+    it { is_expected.to respond_to(:process) }
   end
 
   describe ".new" do

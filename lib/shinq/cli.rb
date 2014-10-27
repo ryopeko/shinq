@@ -27,6 +27,10 @@ module Shinq
           opts[:worker_name] = v
         end
 
+        opt.on('--process VALUE') do |v|
+          opts[:process] = v.to_i
+        end
+
         opt.on('--db-config VALUE') do |v|
           raise OptionParseError, "#{v} does not exist" unless File.exist?(v)
           opts[:db_config] = YAML.load_file(v)
@@ -69,7 +73,7 @@ module Shinq
         daemonize: false,
         worker_type: 'process',
         pid_file: 'shinq.pid',
-        workers: 1
+        workers: options.process
       })
 
       se.run
