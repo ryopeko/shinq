@@ -7,19 +7,16 @@ module Shinq
       @builder ||= SQL::Maker.new(driver: 'mysql', auto_bind: true)
     end
 
-    def self.enqueue(table_name: , args:)
+    def self.enqueue(table_name: , job_id: , args:)
       case args
       when Hash
-        sql = builder.insert(table_name, args)
+        sql = builder.insert(table_name, args.merge(
+          job_id: job_id,
+          enqueued_at: Time.now
+        ))
         Shinq.connection.query(sql)
-      when Array
-        args.each do |queue|
-          sql = builder.insert(table_name, queue)
-
-          Shinq.connection.query(sql)
-        end
       else
-        raise ArgumentError, "queue should be Array[Hash] or Hash"
+        raise ArgumentError, "Queue should be Hash"
       end
     end
 
