@@ -23,7 +23,11 @@ module Shinq
     def parse_options(args)
       opts = {}
       parser = OptionParser.new do |opt|
-        opt.on('--worker VALUE') do |v|
+        opt.on('-d', '--daemon') do |v|
+          opts[:daemonize] = v
+        end
+
+        opt.on('--worker value') do |v|
           opts[:worker_name] = v
         end
 
@@ -74,7 +78,7 @@ module Shinq
 
     def run
       se = ServerEngine.create(nil, Shinq::Launcher, {
-        daemonize: false,
+        daemonize: options.daemonize,
         worker_type: 'process',
         pid_file: 'shinq.pid',
         workers: options.process
