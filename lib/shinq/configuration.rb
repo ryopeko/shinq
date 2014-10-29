@@ -2,15 +2,16 @@ module Shinq
   class ConfigurationError < StandardError; end
 
   class Configuration
-    attr_accessor :require, :worker_name, :db_config, :queue_db, :default_db, :process
+    attr_accessor :require, :worker_name, :db_config, :queue_db, :default_db, :process, :queue_timeout
 
     DEFAULT = {
       require: '.',
-      process: 1
+      process: 1,
+      queue_timeout: 1
     }
 
     def initialize(opts)
-      %i(require worker_name db_config queue_db default_db process).each do |k|
+      %i(require worker_name db_config queue_db default_db process queue_timeout).each do |k|
         send(:"#{k}=", opts[k] || DEFAULT[k])
       end
     end
