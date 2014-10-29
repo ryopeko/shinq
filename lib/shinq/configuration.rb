@@ -7,7 +7,8 @@ module Shinq
     DEFAULT = {
       require: '.',
       process: 1,
-      queue_timeout: 1
+      queue_timeout: 1,
+      daemonize: false
     }
 
     def initialize(opts)
