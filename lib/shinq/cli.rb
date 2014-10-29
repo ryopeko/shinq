@@ -52,6 +52,11 @@ module Shinq
         opt.on('--require VALUE') do |v|
           opts[:require] = v
         end
+
+        opt.on('-v', '--version') do |v|
+          puts "Shinq #{Shinq::VERSION}"
+          exit(0)
+        end
       end
 
       parser.parse!(args)
