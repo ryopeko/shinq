@@ -1,4 +1,5 @@
 # Shinq
+[![Build Status](https://travis-ci.org/ryopeko/shinq.svg)](https://travis-ci.org/ryopeko/shinq)
 
 Worker and enqueuer for Q4M using the interface of ActiveJob.
 
