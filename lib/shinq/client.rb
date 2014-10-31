@@ -24,14 +24,15 @@ module Shinq
     def self.dequeue(table_name:)
       quoted = SQL::Maker::Quoting.quote(table_name)
       queue_timeout_quoted = SQL::Maker::Quoting.quote(Shinq.configuration.queue_timeout)
-      has_queue = Shinq.connection.query("select queue_wait(#{quoted}, #{queue_timeout_quoted})").first
 
-      if has_queue
+      wait_query = "queue_wait(#{quoted}, #{queue_timeout_quoted})"
+      has_queue = Shinq.connection.query("select #{wait_query}").first
+
+      unless has_queue[wait_query].to_i == 0
         sql = builder.select(table_name, ['*'])
         results = Shinq.connection.query(sql)
+        return results.first.symbolize_keys
       end
-
-      results.first.symbolize_keys
     end
 
     def self.done
