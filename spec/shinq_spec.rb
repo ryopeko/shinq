@@ -45,7 +45,7 @@ describe Shinq do
     context "when db_config is present" do
       let(:shinq) { shinq_class }
 
-      it { expect{ shinq.connection }.to raise_error(Shinq::ConfigurationError) }
+      it { expect{ shinq.connection(db_name: :unknown) }.to raise_error(Shinq::ConfigurationError) }
     end
 
     context "when db_config is not preset" do
