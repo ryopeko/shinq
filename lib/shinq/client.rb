@@ -1,5 +1,6 @@
 require 'sql-maker'
 require 'sql/maker/quoting'
+require 'active_support/core_ext/hash/keys'
 
 module Shinq
   class Client
@@ -30,7 +31,7 @@ module Shinq
         results = Shinq.connection.query(sql)
       end
 
-      results.first
+      results.first.symbolize_keys
     end
 
     def self.done
