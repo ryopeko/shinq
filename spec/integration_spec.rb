@@ -7,7 +7,7 @@ describe "Integration" do
     load_database_config(Shinq)
   end
 
-  context "When create queue" do
+  context "When create queue", skip: ENV['TRAVIS'] do
     let(:queue_table) { 'queue_test' }
     let(:args) { {title: 'foo'} }
 
