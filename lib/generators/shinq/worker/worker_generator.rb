@@ -1,8 +1,6 @@
-require 'generators/shinq'
-
 module Shinq
   module Generators
-    class WorkerGenerator < Base
+    class WorkerGenerator < ::Rails::Generators::Base
     end
   end
 end
