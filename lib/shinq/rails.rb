@@ -1,4 +1,5 @@
 require 'shinq/active_job/queue_adapters/shinq_adapter'
+require 'generators/shinq'
 
 module Shinq
   class Rails < ::Rails::Engine
