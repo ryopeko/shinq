@@ -1,0 +1,11 @@
+class <%= migration_class_name %> < ActiveRecord::Migration
+  def change
+    create_table :<%= table_name %>, {id: false, options: "ENGINE=QUEUE"} do |t|
+      t.string :job_id, null: false
+<% attributes.each do |attribute| -%>
+      t.<%= attribute.type %> :<%= attribute.name %><%= attribute.inject_options %>
+<% end -%>
+      t.datetime :enqueued_at, null: false
+    end
+  end
+end
