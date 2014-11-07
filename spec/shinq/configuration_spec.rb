@@ -43,9 +43,16 @@ describe Shinq::Configuration do
     end
 
     context "when default_db's config is present" do
-      let(:configuration) { Shinq::Configuration.new(default_db: :test) }
+      let(:test_db_config) { {foo: :bar} }
+      let(:configuration) {
+        Shinq::Configuration.new(
+          default_db: :test,
+          db_config: {
+            test: test_db_config
+          })
+      }
 
-      it {expect { configuration.default_db_config }.to raise_error(Shinq::ConfigurationError)}
+      it { expect(configuration.default_db_config).to be test_db_config }
     end
   end
 
