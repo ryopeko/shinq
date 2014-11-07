@@ -12,6 +12,7 @@ describe Shinq::Configuration do
     it { is_expected.to respond_to(:default_db) }
     it { is_expected.to respond_to(:process) }
     it { is_expected.to respond_to(:queue_timeout) }
+    it { is_expected.to respond_to(:daemonize) }
   end
 
   describe ".new" do
