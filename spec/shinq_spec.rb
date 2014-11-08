@@ -31,9 +31,18 @@ describe Shinq do
   end
 
   describe ".configuration=" do
-    context "when specify args" do
+    context "when specify args is Hash" do
       let(:shinq) { shinq_class }
       let(:args) { Hash.new }
+
+      it 'is expect to return specified args' do
+        expect(shinq.configuration=(args)).to eq args
+      end
+    end
+
+    context "when specify args is Shinq::Configuration" do
+      let(:shinq) { shinq_class }
+      let(:args) { Shinq::Configuration.new({}) }
 
       it 'is expect to return specified args' do
         expect(shinq.configuration=(args)).to eq args
