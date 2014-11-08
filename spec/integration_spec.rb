@@ -9,6 +9,10 @@ describe "Integration", skip: ENV['TRAVIS'] do
     load_database_config(Shinq)
   end
 
+  after do
+    Shinq.connection.query("delete from #{queue_table}")
+  end
+
   describe "Shinq::Client.enqueue,dequeue" do
     context "valid args" do
       let(:args) { {title: 'foo'} }
