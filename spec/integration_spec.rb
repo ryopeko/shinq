@@ -39,8 +39,4 @@ describe "Integration" do
       }
     end
   end
-
-
-    it { expect(@queue[:title]).to eq args[:title] }
-  end
 end
