@@ -3,12 +3,13 @@ require 'shinq'
 require 'shinq/client'
 
 describe "Integration" do
+  let(:queue_table) { 'queue_test' }
+
   before do
     load_database_config(Shinq)
   end
 
   context "When create queue", skip: ENV['TRAVIS'] do
-    let(:queue_table) { 'queue_test' }
 
     context "valid args" do
       let(:args) { {title: 'foo'} }
@@ -38,5 +39,27 @@ describe "Integration" do
         }.to raise_error(ArgumentError)
       }
     end
+  end
+
+  describe "Shinq::Client.abort" do
+    context "When client has a queue" do
+      before do
+        Shinq::Client.enqueue(
+          table_name: queue_table,
+          job_id: 'jobid',
+          args: {title: 'foo'}
+        )
+
+        @queue_count = Shinq.connection.query("select count(*) as c from #{queue_table}").first['c']
+
+        Shinq::Client.dequeue(table_name: queue_table)
+        Shinq::Client.abort
+
+        @after_queue_count = Shinq.connection.query("select count(*) as c from #{queue_table}").first['c']
+      end
+
+      it { expect(@after_queue_count).to be @queue_count }
+    end
+
   end
 end
