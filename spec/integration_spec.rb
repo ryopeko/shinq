@@ -61,5 +61,12 @@ describe "Integration" do
       it { expect(@after_queue_count).to be @queue_count }
     end
 
+    context "When client does not have a queue" do
+      it {
+        expect {
+          Shinq::Client.abort
+        }.to raise_error (/not in owner mode/)
+      }
+    end
   end
 end
