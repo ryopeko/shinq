@@ -2,15 +2,14 @@ require 'spec_helper'
 require 'shinq'
 require 'shinq/client'
 
-describe "Integration" do
+describe "Integration", skip: ENV['TRAVIS'] do
   let(:queue_table) { 'queue_test' }
 
   before do
     load_database_config(Shinq)
   end
 
-  context "When create queue", skip: ENV['TRAVIS'] do
-
+  describe "Shinq::Client.enqueue,dequeue" do
     context "valid args" do
       let(:args) { {title: 'foo'} }
 
