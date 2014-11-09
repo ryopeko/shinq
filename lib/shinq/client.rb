@@ -35,6 +35,22 @@ module Shinq
       end
     end
 
+    def self.queue_stats(table_name:)
+      quoted = SQL::Maker::Quoting.quote(table_name)
+
+      stats_query = "queue_stats(#{quoted})"
+      result = Shinq.connection.query("select #{stats_query}")
+
+      stats = result.first[stats_query].split(/\n/).each_with_object({}) do |s, h|
+        (k,v) = s.split(/:/)
+        h[k.to_sym] = v.to_i
+      end
+
+      stats.merge(
+        queue_count: stats[:rows_removed] - stats[:rows_written]
+      )
+    end
+
     def self.done
       Shinq.connection.query('select queue_end()')
     end

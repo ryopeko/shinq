@@ -72,4 +72,25 @@ describe "Integration", skip: ENV['TRAVIS'] do
       }
     end
   end
+
+  describe "Shinq::Client.queue_stats" do
+    subject(:stats) {
+      Shinq::Client.queue_stats(table_name: queue_table)
+    }
+
+    it { expect(stats).to have_key :rows_written }
+    it { expect(stats).to have_key :rows_removed }
+    it { expect(stats).to have_key :wait_immediate }
+    it { expect(stats).to have_key :wait_delayed }
+    it { expect(stats).to have_key :wait_timeout }
+    it { expect(stats).to have_key :restored_by_abort }
+    it { expect(stats).to have_key :restored_by_close }
+    it { expect(stats).to have_key :bytes_total }
+    it { expect(stats).to have_key :bytes_removed }
+    it { expect(stats).to have_key :queue_count }
+
+    it "queue_count expect to be equal rows_removed - rows_written" do
+      expect(stats[:queue_count]).to eq (stats[:rows_removed] - stats[:rows_written])
+    end
+  end
 end
