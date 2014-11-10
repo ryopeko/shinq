@@ -23,37 +23,37 @@ module Shinq
     def parse_options(args)
       opts = {}
       parser = OptionParser.new do |opt|
-        opt.on('-d', '--daemon') do |v|
+        opt.on('-d', '--daemon', 'Daemonize process') do |v|
           opts[:daemonize] = v
         end
 
-        opt.on('--worker value') do |v|
+        opt.on('--worker value', 'Name of worker class') do |v|
           opts[:worker_name] = v
         end
 
-        opt.on('--process VALUE') do |v|
+        opt.on('--process VALUE', 'Number of workers') do |v|
           opts[:process] = v.to_i
         end
 
-        opt.on('--queue-timeout VALUE') do |v|
+        opt.on('--queue-timeout VALUE', 'Waiting queue time(sec). use function of queue_wait(Q4M)') do |v|
           opts[:queue_timeout] = v.to_i
         end
 
-        opt.on('--db-config VALUE') do |v|
+        opt.on('--db-config VALUE', 'Specify configuration file') do |v|
           raise OptionParseError, "#{v} does not exist" unless File.exist?(v)
           opts[:db_config] = YAML.load_file(v)
         end
 
-        opt.on('--queue-database VALUE') do |v|
+        opt.on('--queue-database VALUE', 'Name of queue database') do |v|
           raise OptionParseError, "#{v}'s settings does not exist" unless opts[:db_config][v]
           opts[:queue_db] = v
         end
 
-        opt.on('--require VALUE') do |v|
+        opt.on('--require VALUE', 'Add require path') do |v|
           opts[:require] = v
         end
 
-        opt.on('-v', '--version') do |v|
+        opt.on('-v', '--version', 'Print version') do |v|
           puts "Shinq #{Shinq::VERSION}"
           exit(0)
         end
