@@ -31,14 +31,55 @@ end
 ```
 
 ### Worker
+
+#### Generate worker, migration file
+
+```
+$ rails generate shinq:worker worker_name title:string
+      create  db/migrate/20141110061243_create_worker_names.rb
+      create  app/workers/worker_name.rb
+```
+
+Generated worker file (app/workers/worker_name.rb)
 ```ruby
-class FooWorker < ActiveJob::Base
-  aueue_as :my_queues #name of queue table
+class WorkerName < ActiveJob::Base
+  queue_as :worker_names
 
   def perform(args)
-    #perform asynchronous
+    #do something
   end
 end
+```
+
+Generated migration file
+```ruby
+class CreateWorkerNames < ActiveRecord::Migration
+  def change
+    create_table :worker_names, {id: false, options: "ENGINE=QUEUE"} do |t|
+      t.string :job_id, null: false
+      t.string :title
+      t.datetime :enqueued_at, null: false
+    end
+  end
+end
+```
+
+#### migrate
+```
+$ rake db:migrate
+== 20141110061243 CreateWorkerNames: migrating ================================
+-- create_table(:worker_names, {:id=>false, :options=>"ENGINE=QUEUE"})
+   -> 0.0260s
+== 20141110061243 CreateWorkerNames: migrated (0.0261s) =======================
+
+mysql> show create table worker_names\G
+*************************** 1. row ***************************
+       Table: worker_names
+Create Table: CREATE TABLE `worker_names` (
+  `job_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `enqueued_at` datetime NOT NULL
+) ENGINE=QUEUE DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 ```
 
 ### Enqueue
