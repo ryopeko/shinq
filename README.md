@@ -84,7 +84,7 @@ Create Table: CREATE TABLE `worker_names` (
 
 ### Enqueue
 ```ruby
-FooWorker.perform_later(foo: 'bar', baz: 'qux')
+WorkerName.perform_later(title: 'foo')
 ```
 
 ### Worker execution
