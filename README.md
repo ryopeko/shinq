@@ -88,7 +88,13 @@ WorkerName.perform_later(title: 'foo')
 ```
 
 ### Worker execution
-TBD
+
+#### Basic execution
+```
+$ bundle exec shinq --worker worker_name
+```
+
+You can specify some options. see `bundle exec shinq --help`
 
 ## Contributing
 
