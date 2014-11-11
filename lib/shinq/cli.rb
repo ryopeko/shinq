@@ -27,11 +27,11 @@ module Shinq
           opts[:daemonize] = v
         end
 
-        opt.on('--worker value', 'Name of worker class') do |v|
+        opt.on('-w', '--worker value', 'Name of worker class') do |v|
           opts[:worker_name] = v
         end
 
-        opt.on('--process VALUE', 'Number of workers') do |v|
+        opt.on('-p', '--process VALUE', 'Number of workers') do |v|
           opts[:process] = v.to_i
         end
 
@@ -49,7 +49,7 @@ module Shinq
           opts[:queue_db] = v
         end
 
-        opt.on('--require VALUE', 'Add require path') do |v|
+        opt.on('-r', '--require VALUE', 'Add require path') do |v|
           opts[:require] = v
         end
 
