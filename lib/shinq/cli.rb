@@ -2,6 +2,7 @@ require 'optparse'
 require 'yaml'
 require 'shinq'
 require 'shinq/launcher'
+require 'shinq/statistics'
 require 'shinq/configuration'
 require 'serverengine'
 
@@ -53,6 +54,10 @@ module Shinq
           opts[:require] = v
         end
 
+        opt.on('-s', '--statistics VALUE', 'Display queue statistics interval time(sec)') do |v|
+          opts[:statistics] = v.to_i
+        end
+
         opt.on('-v', '--version', 'Print version') do |v|
           puts "Shinq #{Shinq::VERSION}"
           exit(0)
@@ -82,7 +87,9 @@ module Shinq
     end
 
     def run
-      se = ServerEngine.create(nil, Shinq::Launcher, {
+      klass = !options.statistics.nil? && options.statistics ? Shinq::Statistics : Shinq::Launcher
+
+      se = ServerEngine.create(nil, klass, {
         daemonize: options.daemonize,
         worker_type: 'process',
         pid_file: 'shinq.pid',
