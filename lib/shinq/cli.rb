@@ -39,7 +39,7 @@ module Shinq
           opts[:queue_timeout] = v.to_i
         end
 
-        opt.on('--db-config VALUE', 'Specify configuration file') do |v|
+        opt.on('--db-config VALUE', 'Specify database configuration file') do |v|
           raise OptionParseError, "#{v} does not exist" unless File.exist?(v)
           opts[:db_config] = YAML.load_file(v)
         end
