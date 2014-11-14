@@ -31,6 +31,14 @@ module Shinq
     @connections ||= {}
     @connections[db_name] ||= setup_db_connection(db_name)
   end
+
+  def self.logger
+    @logger
+  end
+
+  def self.logger=(log)
+    @logger = log
+  end
 end
 
 require 'shinq/rails' if defined?(::Rails::Engine)

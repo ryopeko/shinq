@@ -4,6 +4,7 @@ require 'shinq'
 require 'shinq/launcher'
 require 'shinq/statistics'
 require 'shinq/configuration'
+require 'shinq/logger'
 require 'serverengine'
 
 module Shinq
@@ -74,6 +75,7 @@ module Shinq
 
     def bootstrap
       target = options.require
+      Shinq.logger = Shinq::Logger.logger
 
       if File.directory?(target)
         require 'rails'

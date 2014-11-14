@@ -9,8 +9,7 @@ module Shinq
 
       until @stop
         queue = Shinq::Client.dequeue(table_name: worker_name.pluralize)
-        #TODO use logger
-        next p "Queue is empty (#{Time.now})" unless queue
+        next Shinq.logger.info("Queue is empty (#{Time.now})") unless queue
 
         begin
           worker_class.new.perform(queue)
