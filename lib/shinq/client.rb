@@ -47,7 +47,7 @@ module Shinq
       end
 
       stats.merge(
-        queue_count: stats[:rows_removed] - stats[:rows_written]
+        queue_count: stats[:rows_written] - stats[:rows_removed]
       )
     end
 
