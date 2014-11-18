@@ -9,7 +9,7 @@ module Shinq
     def self.rails_bootstrap
       Shinq.configuration.db_config = ActiveRecord::Base.configurations
       Shinq.configuration.default_db = ::Rails.env
-      Shinq.logger = ::Rails.logger
+      Shinq.logger = ::Rails.logger if Shinq.configuration.daemonize
     end
   end
 end

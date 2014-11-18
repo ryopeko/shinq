@@ -96,7 +96,7 @@ module Shinq
         worker_type: 'process',
         pid_file: 'shinq.pid',
         workers: options.process,
-        logger: Shinq.logger
+        logger: options.daemonize ? Shinq.logger : nil
       })
 
       se.run
