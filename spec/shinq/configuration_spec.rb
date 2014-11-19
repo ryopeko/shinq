@@ -14,6 +14,7 @@ describe Shinq::Configuration do
     it { is_expected.to respond_to(:queue_timeout) }
     it { is_expected.to respond_to(:daemonize) }
     it { is_expected.to respond_to(:statistics) }
+    it { is_expected.to respond_to(:lifecycle) }
   end
 
   describe ".new" do

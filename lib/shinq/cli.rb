@@ -55,6 +55,10 @@ module Shinq
           opts[:require] = v
         end
 
+        opt.on('-l', '--max-lifecycle VALUE', 'Refork process when loopnumber is over specify number') do |v|
+          opts[:lifecycle] = v.to_i
+        end
+
         opt.on('-s', '--statistics VALUE', 'Display queue statistics interval time(sec)') do |v|
           opts[:statistics] = v.to_i
         end
