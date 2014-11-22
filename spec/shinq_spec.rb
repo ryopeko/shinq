@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'shinq'
 require 'shinq/configuration'
+require 'logger'
 
 def shinq_class
   Shinq.dup
@@ -65,6 +66,24 @@ describe Shinq do
       }
 
       it { expect(shinq.connection(db_name: :test)).to be_a_kind_of(Mysql2::Client) }
+    end
+  end
+
+  describe ".logger" do
+    context "when logger is present" do
+      let(:shinq) { shinq_class }
+      it { expect(shinq.logger).to be nil }
+    end
+
+    context "when logger is present" do
+      let(:logger) { Logger.new(STDOUT) }
+      let(:shinq) {
+        shinq_class.tap {|s|
+          s.logger = logger
+        }
+      }
+
+      it { expect(shinq.logger).to be logger }
     end
   end
 end
