@@ -17,7 +17,7 @@ module Shinq
           worker_class.new.perform(queue)
         rescue => e
           Shinq::Client.abort
-          raise
+          raise e
         end
 
         Shinq::Client.done

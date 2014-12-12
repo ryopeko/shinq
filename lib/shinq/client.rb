@@ -17,7 +17,7 @@ module Shinq
         ))
         Shinq.connection.query(sql)
       else
-        raise ArgumentError, "Queue should be Hash"
+        raise ArgumentError, "`args` should be a Hash"
       end
     end
 
@@ -31,6 +31,7 @@ module Shinq
       unless has_queue[wait_query].to_i == 0
         sql = builder.select(table_name, ['*'])
         results = Shinq.connection.query(sql)
+        # select always returns 1 line in the owner (queue_wait) mode
         return results.first.symbolize_keys
       end
     end
