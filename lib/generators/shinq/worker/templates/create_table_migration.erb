@@ -1,6 +1,6 @@
 class <%= migration_class_name %> < ActiveRecord::Migration
   def change
-    create_table :<%= table_name %>, {id: false, options: "ENGINE=QUEUE"} do |t|
+    create_table :<%= table_name %>, id: false, options: "ENGINE=QUEUE" do |t|
       t.string :job_id, null: false
 <% attributes.each do |attribute| -%>
       t.<%= attribute.type %> :<%= attribute.name %><%= attribute.inject_options %>
