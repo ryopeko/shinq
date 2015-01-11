@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "mysql2", "~> 0.3.16"
   spec.add_dependency "sql-maker", "~> 0.0.4"
-  spec.add_dependency "activesupport", "~> 4.2"
+  spec.add_dependency "activesupport", "~> 4.2.0"
   spec.add_dependency "activejob", "~> 4.2.0"
   spec.add_dependency 'serverengine', '~> 1.5.9'
 end
