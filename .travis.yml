@@ -7,4 +7,7 @@ rvm:
   - 2.2.1
 gemfile:
   - Gemfile
+before_install:
+  - mysql -e "create database IF NOT EXISTS shinq_test;" -uroot
+  - mysql -e "use shinq_test; create table queue_test (job_id varchar(255) not null, title varchar(255), enqueued_at datetime not null) ENGINE=QUEUE;" -uroot
 script: bundle exec rspec
