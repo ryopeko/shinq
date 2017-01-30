@@ -15,6 +15,7 @@ describe Shinq::Configuration do
     it { is_expected.to respond_to(:daemonize) }
     it { is_expected.to respond_to(:statistics) }
     it { is_expected.to respond_to(:lifecycle) }
+    it { is_expected.to respond_to(:abort_on_error) }
   end
 
   describe ".new" do
