@@ -1,18 +1,27 @@
 module Shinq
   class ConfigurationError < StandardError; end
 
+  # @!attribute abort_on_error
+  #   @return [Boolean] Whether do +queue_abort()+ on performing failure.
+  #   @see Shinq::Launcher#run
+  #
+  #   Defaults to +true+, which means that worker do +queue_end()+ AFTER it proceeds a job.
+  #   If it is +false+, worker do +queue_end()+ BEFORE it proceeds a job.
+  #   You may need to set it +false+ for jobs which take very long time to proceed.
+  #   You may also need to handle performing error manually then.
   class Configuration
-    attr_accessor :require, :worker_name, :db_config, :queue_db, :default_db, :process, :queue_timeout, :daemonize, :statistics, :lifecycle
+    attr_accessor :require, :worker_name, :db_config, :queue_db, :default_db, :process, :queue_timeout, :daemonize, :statistics, :lifecycle, :abort_on_error
 
     DEFAULT = {
       require: '.',
       process: 1,
       queue_timeout: 1,
-      daemonize: false
+      daemonize: false,
+      abort_on_error: true
     }
 
     def initialize(opts)
-      %i(require worker_name db_config queue_db default_db process queue_timeout daemonize statistics lifecycle).each do |k|
+      %i(require worker_name db_config queue_db default_db process queue_timeout daemonize statistics lifecycle abort_on_error).each do |k|
         send(:"#{k}=", opts[k] || DEFAULT[k])
       end
     end

@@ -3,6 +3,8 @@ require 'active_support/inflector'
 
 module Shinq
   module Launcher
+    # Wait configured queue and proceed each of them until stop.
+    # @see Shinq::Configuration#abort_on_error
     def run
       worker_name = Shinq.configuration.worker_name
       worker_class = worker_name.camelize.constantize
@@ -13,14 +15,19 @@ module Shinq
         queue = Shinq::Client.dequeue(table_name: worker_name.pluralize)
         next Shinq.logger.info("Queue is empty (#{Time.now})") unless queue
 
-        begin
-          worker_class.new.perform(queue)
-        rescue => e
-          Shinq::Client.abort
-          raise e
-        end
+        if Shinq.configuration.abort_on_error
+          begin
+            worker_class.new.perform(queue)
+          rescue => e
+            Shinq::Client.abort
+            raise e
+          end
 
-        Shinq::Client.done
+          Shinq::Client.done
+        else
+          Shinq::Client.done
+          worker_class.new.perform(queue)
+        end
 
         @loop_count += 1
 

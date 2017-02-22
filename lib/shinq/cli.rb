@@ -63,6 +63,10 @@ module Shinq
           opts[:statistics] = v.to_i
         end
 
+        opt.on('--[no-]abort-on-error', 'Abort ') do |v|
+          opts[:abort_on_error] = v
+        end
+
         opt.on('-v', '--version', 'Print version') do |v|
           puts "Shinq #{Shinq::VERSION}"
           exit(0)
