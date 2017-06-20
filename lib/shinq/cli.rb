@@ -30,7 +30,7 @@ module Shinq
           opts[:daemonize] = v
         end
 
-        opt.on('-w', '--worker value', 'Name of worker class') do |v|
+        opt.on('-w', '--worker VALUE', 'Name of worker class') do |v|
           worker_class = v.camelize.safe_constantize
           raise OptionParseError, "worker class #{v.camelize} corresponding to #{v} does not exist" unless worker_class
           opts[:worker_name] = v
