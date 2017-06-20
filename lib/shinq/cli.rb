@@ -6,6 +6,7 @@ require 'shinq/statistics'
 require 'shinq/configuration'
 require 'shinq/logger'
 require 'serverengine'
+require 'active_support/inflector'
 
 module Shinq
   class OptionParseError < StandardError; end
@@ -30,7 +31,10 @@ module Shinq
         end
 
         opt.on('-w', '--worker value', 'Name of worker class') do |v|
+          worker_class = v.camelize.safe_constantize
+          raise OptionParseError, "worker class #{v.camelize} corresponding to #{v} does not exist" unless worker_class
           opts[:worker_name] = v
+          opts[:worker_class] = worker_class
         end
 
         opt.on('-p', '--process VALUE', 'Number of workers') do |v|

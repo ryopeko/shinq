@@ -10,7 +10,7 @@ module Shinq
   #   You may need to set it +false+ for jobs which take very long time to proceed.
   #   You may also need to handle performing error manually then.
   class Configuration
-    attr_accessor :require, :worker_name, :db_config, :queue_db, :default_db, :process, :queue_timeout, :daemonize, :statistics, :lifecycle, :abort_on_error
+    attr_accessor :require, :worker_name, :worker_class, :db_config, :queue_db, :default_db, :process, :queue_timeout, :daemonize, :statistics, :lifecycle, :abort_on_error
 
     DEFAULT = {
       require: '.',
