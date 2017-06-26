@@ -41,6 +41,10 @@ module Shinq
           opts[:process] = v.to_i
         end
 
+        opt.on('--graceful-kill-timeout VALUE', 'Seconds to SIGQUIT workers even during performing jobs') do |v|
+          opts[:graceful_kill_timeout] = v.to_i
+        end
+
         opt.on('--queue-timeout VALUE', 'Waiting queue time(sec). use function of queue_wait(Q4M)') do |v|
           opts[:queue_timeout] = v.to_i
         end
@@ -108,6 +112,7 @@ module Shinq
         worker_type: 'process',
         pid_file: 'shinq.pid',
         workers: options.process,
+        worker_graceful_kill_timeout: options.graceful_kill_timeout
         logger: options.daemonize ? Shinq.logger : nil
       })
 
