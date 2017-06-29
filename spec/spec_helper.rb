@@ -3,9 +3,9 @@ require 'simplecov'
 require 'yaml'
 require 'active_support/core_ext/hash'
 
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
   SimpleCov::Formatter::HTMLFormatter
-]
+)
 
 SimpleCov.start do
   add_filter 'spec'
