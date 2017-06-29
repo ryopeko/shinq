@@ -6,7 +6,10 @@ describe "Integration", skip: ENV['TRAVIS'] do
   let(:queue_table) { 'queue_test' }
 
   before do
-    load_database_config(Shinq)
+    Shinq.configuration = {
+      default_db: :test,
+      db_config: load_database_config
+    }
   end
 
   after do

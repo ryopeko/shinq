@@ -3,6 +3,10 @@ require 'simplecov'
 require 'yaml'
 require 'active_support/core_ext/hash'
 
+def load_database_config
+  db_config = YAML.load_file(File.expand_path('./config/database.yml', __dir__)).symbolize_keys
+end
+
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
   SimpleCov::Formatter::HTMLFormatter
 )
@@ -20,14 +24,11 @@ RSpec.configure do |config|
     config.default_formatter = 'doc'
   end
 
+  config.before(:suite) do
+    connection = Mysql2::Client.new(load_database_config[:test].merge(flags: Mysql2::Client::MULTI_STATEMENTS))
+    connection.query(File.read(File.expand_path('./db/structure.sql', __dir__)))
+  end
+
   config.order = :random
   Kernel.srand config.seed
-end
-
-def load_database_config(klass)
-  db_config = YAML.load_file(File.expand_path('./config/database.yml', __dir__)).symbolize_keys
-  klass.configuration = {
-    db_config: db_config,
-    default_db: :test
-  }
 end

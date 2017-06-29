@@ -61,7 +61,10 @@ describe Shinq do
     context "when db_config is not preset" do
       let(:shinq) {
         shinq_class.tap {|s|
-          load_database_config(s)
+          s.configuration = {
+            db_config: load_database_config,
+            default_db: :test,
+          }
         }
       }
 
