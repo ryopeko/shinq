@@ -73,8 +73,12 @@ describe Shinq do
   end
 
   describe ".logger" do
-    context "when logger is present" do
-      let(:shinq) { shinq_class }
+    context "when logger is not present" do
+      let(:shinq) {
+        shinq_class.tap {|s|
+          s.logger = nil
+        }
+      }
       it { expect(shinq.logger).to be nil }
     end
 
