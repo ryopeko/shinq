@@ -112,8 +112,8 @@ module Shinq
         worker_type: 'process',
         pid_file: 'shinq.pid',
         workers: options.process,
-        worker_graceful_kill_timeout: options.graceful_kill_timeout
-        logger: options.daemonize ? Shinq.logger : nil
+        worker_graceful_kill_timeout: options.graceful_kill_timeout,
+        logger: options.daemonize ? Shinq.logger : nil,
       })
 
       se.run
