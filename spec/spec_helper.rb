@@ -1,7 +1,11 @@
+ENV['RAILS_ENV'] ||= 'test'
+$LOAD_PATH << File.expand_path('../helpers', __FILE__)
+
 require 'rspec/mocks/standalone'
 require 'simplecov'
 require 'yaml'
 require 'active_support/core_ext/hash'
+require 'mysql2'
 
 def load_database_config
   db_config = YAML.load_file(File.expand_path('./config/database.yml', __dir__)).symbolize_keys
