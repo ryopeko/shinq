@@ -10,7 +10,7 @@ module Shinq
   #   You may need to set it +false+ for jobs which take very long time to proceed.
   #   You may also need to handle performing error manually then.
   class Configuration
-    attr_accessor :require, :worker_name, :worker_class, :db_config, :queue_db, :default_db, :process, :graceful_kill_timeout, :queue_timeout, :daemonize, :statistics, :lifecycle, :abort_on_error
+    attr_accessor :require, :worker_name, :db_config, :queue_db, :default_db, :process, :graceful_kill_timeout, :queue_timeout, :daemonize, :statistics, :lifecycle, :abort_on_error
 
     DEFAULT = {
       require: '.',
@@ -25,6 +25,14 @@ module Shinq
       %i(require worker_name db_config queue_db default_db process queue_timeout daemonize statistics lifecycle abort_on_error).each do |k|
         send(:"#{k}=", opts[k] || DEFAULT[k])
       end
+    end
+
+    def constantize_worker_class
+      worker_class = worker_name.camelize.safe_constantize
+      unless worker_class
+        raise ConfigurationError, "worker class #{worker_name.camelize} corresponding to #{worker_name} does not exist"
+      end
+      worker_class
     end
 
     def default_db_config

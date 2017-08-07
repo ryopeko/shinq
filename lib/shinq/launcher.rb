@@ -7,7 +7,7 @@ module Shinq
     # @see Shinq::Configuration#abort_on_error
     def run
       worker_name = Shinq.configuration.worker_name
-      worker_class = Shinq.configuration.worker_class
+      worker_class = Shinq.configuration.constantize_worker_class
 
       @loop_count = 0
 

@@ -15,6 +15,7 @@ module Shinq
     def initialize(args=ARGV)
       setup_option(args)
       bootstrap
+      initialize_shinq
     end
 
     def setup_option(args)
@@ -31,10 +32,7 @@ module Shinq
         end
 
         opt.on('-w', '--worker VALUE', 'Name of worker class') do |v|
-          worker_class = v.camelize.safe_constantize
-          raise OptionParseError, "worker class #{v.camelize} corresponding to #{v} does not exist" unless worker_class
           opts[:worker_name] = v
-          opts[:worker_class] = worker_class
         end
 
         opt.on('-p', '--process VALUE', 'Number of workers') do |v|
@@ -102,6 +100,10 @@ module Shinq
       else
         require target
       end
+    end
+
+    def initialize_shinq
+      Shinq.configuration.constantize_worker_class
     end
 
     def run
