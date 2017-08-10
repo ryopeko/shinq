@@ -9,6 +9,10 @@ end
 
 describe Shinq do
   subject { shinq_class }
+  after do
+    Shinq.clear_all_connections!
+    shinq_class.clear_all_connections!
+  end
 
   it { is_expected.to respond_to(:configuration) }
   it { is_expected.to respond_to(:configuration=) }
@@ -52,13 +56,13 @@ describe Shinq do
   end
 
   describe ".connection" do
-    context "when db_config is present" do
+    context "when db_config is not present" do
       let(:shinq) { shinq_class }
 
       it { expect{ shinq.connection(db_name: :unknown) }.to raise_error(Shinq::ConfigurationError) }
     end
 
-    context "when db_config is not preset" do
+    context "when db_config is present" do
       let(:shinq) {
         shinq_class.tap {|s|
           s.configuration = {
@@ -69,6 +73,35 @@ describe Shinq do
       }
 
       it { expect(shinq.connection(db_name: :test)).to be_a_kind_of(Mysql2::Client) }
+    end
+  end
+
+  describe '.clear_all_connections!' do
+    let(:shinq) {
+      shinq_class.tap {|s|
+        s.configuration = {
+          db_config: load_database_config,
+          default_db: :test,
+        }
+      }
+    }
+
+    context 'when there are no connections' do
+      it { expect { shinq.clear_all_connections! }.not_to raise_error }
+    end
+
+    context 'when there is a connection' do
+      let!(:connection) { shinq.connection(db_name: :test) }
+
+      it 'closes connection' do
+        shinq.clear_all_connections!
+        expect(connection.ping).to be false
+      end
+
+      it 'clears connection cache' do
+        shinq.clear_all_connections!
+        expect(shinq.connection(db_name: :test)).not_to eq connection
+      end
     end
   end
 

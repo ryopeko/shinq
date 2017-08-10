@@ -6,6 +6,7 @@ require 'simplecov'
 require 'yaml'
 require 'active_support/core_ext/hash'
 require 'mysql2'
+require 'timecop'
 
 def load_database_config
   db_config = YAML.load_file(File.expand_path('./config/database.yml', __dir__)).symbolize_keys
@@ -30,7 +31,13 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     connection = Mysql2::Client.new(load_database_config[:test].merge(flags: Mysql2::Client::MULTI_STATEMENTS))
-    connection.query(File.read(File.expand_path('./db/structure.sql', __dir__)))
+    result = connection.query(File.read(File.expand_path('./db/structure.sql', __dir__)))
+
+    while connection.next_result
+      connection.store_result
+    end
+
+    connection.close
   end
 
   config.order = :random

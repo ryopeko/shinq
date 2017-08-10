@@ -66,7 +66,7 @@ module Shinq
 
     def self.column_names(table_name:)
       @column_names_by_table_name ||= {}
-      @column_names_by_table_name[table_name] ||= begin
+      @column_names_by_table_name[table_name.to_sym] ||= begin
         quoted = SQL::Maker::Quoting.quote(table_name)
         column = Shinq.connection.query(<<-EOS).map { |record| record['column_name'] }
 select column_name from information_schema.columns where table_schema = database() and table_name = #{quoted}
@@ -76,7 +76,7 @@ select column_name from information_schema.columns where table_schema = database
 
     def self.fetch_column_names(table_name:)
       @column_names_by_table_name ||= {}
-      @column_names_by_table_name.delete(table_name)
+      @column_names_by_table_name.delete(table_name.to_sym)
       column_names(table_name: table_name)
     end
 
