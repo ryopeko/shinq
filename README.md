@@ -58,6 +58,7 @@ class CreateWorkerNames < ActiveRecord::Migration
     create_table :worker_names, id: false, options: "ENGINE=QUEUE" do |t|
       t.string :job_id, null: false
       t.string :title
+      t.integer :scheduled_at, limit: 8, default: 0, null: false
       t.datetime :enqueued_at, null: false
     end
   end
@@ -78,6 +79,7 @@ mysql> show create table worker_names\G
 Create Table: CREATE TABLE `worker_names` (
   `job_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `scheduled_at` bigint(20) NOT NULL DEFAULT '0',
   `enqueued_at` datetime NOT NULL
 ) ENGINE=QUEUE DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 ```

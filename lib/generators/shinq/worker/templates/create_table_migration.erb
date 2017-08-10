@@ -5,6 +5,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration
 <% attributes.each do |attribute| -%>
       t.<%= attribute.type %> :<%= attribute.name %><%= attribute.inject_options %>
 <% end -%>
+      t.integer :scheduled_at, limit: 8, default: 0, null: false
       t.datetime :enqueued_at, null: false
     end
   end
