@@ -3,6 +3,10 @@ require 'active_support/inflector'
 
 module Shinq
   module Launcher
+    def initialize
+      Shinq.clear_all_connections!
+    end
+
     # Wait configured queue and proceed each of them until stop.
     # @see Shinq::Configuration#abort_on_error
     def run

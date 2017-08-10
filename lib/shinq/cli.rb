@@ -103,6 +103,7 @@ module Shinq
     end
 
     def initialize_shinq
+      Shinq::Client.fetch_column_names(table_name: Shinq.configuration.worker_name.pluralize)
       Shinq.configuration.worker_class # check if worker_class is constantizable before running ServerEngine
     end
 

@@ -8,13 +8,19 @@ module Shinq
       @builder ||= SQL::Maker.new(driver: 'mysql', auto_bind: true)
     end
 
-    def self.enqueue(table_name: , job_id: , args:)
+    def self.enqueue(table_name: , job_id: , args:, scheduled_at: nil)
+      if scheduled_at && !schedulable?(table_name: table_name)
+        raise ArgumentError, "table #{table_name} is not schedulable. You need column `scheduled_at`"
+      end
+
       case args
       when Hash
-        sql = builder.insert(table_name, args.merge(
+        attributes = args.merge(
           job_id: job_id,
-          enqueued_at: Time.now
-        ))
+          scheduled_at: scheduled_at ? scheduled_at.to_i : nil,
+          enqueued_at: Time.now,
+        ).compact
+        sql = builder.insert(table_name, attributes)
         Shinq.connection.query(sql)
       else
         raise ArgumentError, "`args` should be a Hash"
@@ -22,7 +28,9 @@ module Shinq
     end
 
     def self.dequeue(table_name:)
-      quoted = SQL::Maker::Quoting.quote(table_name)
+      condition = schedulable?(table_name: table_name) ? ":scheduled_at<#{Time.now.to_i}" : ''
+      quoted = SQL::Maker::Quoting.quote("#{table_name}#{condition}")
+
       queue_timeout_quoted = SQL::Maker::Quoting.quote(Shinq.configuration.queue_timeout)
 
       wait_query = "queue_wait(#{quoted}, #{queue_timeout_quoted})"
@@ -50,6 +58,26 @@ module Shinq
       stats.merge(
         queue_count: stats[:rows_written] - stats[:rows_removed]
       )
+    end
+
+    def self.schedulable?(table_name:)
+      self.column_names(table_name: table_name).include?('scheduled_at')
+    end
+
+    def self.column_names(table_name:)
+      @column_names_by_table_name ||= {}
+      @column_names_by_table_name[table_name] ||= begin
+        quoted = SQL::Maker::Quoting.quote(table_name)
+        column = Shinq.connection.query(<<-EOS).map { |record| record['column_name'] }
+select column_name from information_schema.columns where table_schema = database() and table_name = #{quoted}
+        EOS
+      end
+    end
+
+    def self.fetch_column_names(table_name:)
+      @column_names_by_table_name ||= {}
+      @column_names_by_table_name.delete(table_name)
+      column_names(table_name: table_name)
     end
 
     def self.done

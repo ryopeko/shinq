@@ -32,6 +32,14 @@ module Shinq
     @connections[db_name] ||= setup_db_connection(db_name)
   end
 
+  def self.clear_all_connections!
+    return unless @connections
+    @connections.each do |_db_name, connection|
+      connection && connection.close
+    end
+    @connections = {}
+  end
+
   def self.logger
     @logger
   end
