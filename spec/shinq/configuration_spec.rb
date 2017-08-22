@@ -33,18 +33,18 @@ describe Shinq::Configuration do
     end
   end
 
-  describe '#constantize_worker_class' do
+  describe '#worker_class' do
     context 'when worker_name is valid' do
       let(:configuration) { Shinq::Configuration.new(worker_name: 'shinq') }
       it 'constantizes worker_name to corresponding constant' do
-        expect(configuration.constantize_worker_class).to eq Shinq
+        expect(configuration.worker_class).to eq Shinq
       end
     end
 
     context 'when worker_name is invalid' do
       let(:configuration) { Shinq::Configuration.new(worker_name: 'invalid_shinq') }
 
-      it {expect { configuration.constantize_worker_class }.to raise_error(Shinq::ConfigurationError)}
+      it {expect { configuration.worker_class }.to raise_error(Shinq::ConfigurationError)}
     end
   end
 

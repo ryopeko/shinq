@@ -27,7 +27,7 @@ module Shinq
       end
     end
 
-    def constantize_worker_class
+    def worker_class
       worker_class = worker_name.camelize.safe_constantize
       unless worker_class
         raise ConfigurationError, "worker class #{worker_name.camelize} corresponding to #{worker_name} does not exist"

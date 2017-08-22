@@ -103,7 +103,7 @@ module Shinq
     end
 
     def initialize_shinq
-      Shinq.configuration.constantize_worker_class
+      Shinq.configuration.worker_class # check if worker_class is constantizable before running ServerEngine
     end
 
     def run
