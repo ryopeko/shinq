@@ -28,7 +28,7 @@ module Shinq
     end
 
     def self.dequeue(table_name:)
-      condition = schedulable?(table_name: table_name) ? ":scheduled_at<#{Time.now.to_i}" : ''
+      condition = schedulable?(table_name: table_name) ? ":scheduled_at<=#{Time.now.to_i}" : ''
       quoted = SQL::Maker::Quoting.quote("#{table_name}#{condition}")
 
       queue_timeout_quoted = SQL::Maker::Quoting.quote(Shinq.configuration.queue_timeout)

@@ -58,7 +58,7 @@ describe "Integration", skip: ENV['TRAVIS'] do
 
         context 'when specified time elapsed' do
           before do
-            Timecop.travel(1.second.since(scheduled_at))
+            Timecop.travel(scheduled_at)
           end
 
           it 'can dequeue job' do
