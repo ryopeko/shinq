@@ -33,6 +33,21 @@ describe Shinq::Configuration do
     end
   end
 
+  describe '#worker_class' do
+    context 'when worker_name is valid' do
+      let(:configuration) { Shinq::Configuration.new(worker_name: 'shinq') }
+      it 'constantizes worker_name to corresponding constant' do
+        expect(configuration.worker_class).to eq Shinq
+      end
+    end
+
+    context 'when worker_name is invalid' do
+      let(:configuration) { Shinq::Configuration.new(worker_name: 'invalid_shinq') }
+
+      it {expect { configuration.worker_class }.to raise_error(Shinq::ConfigurationError)}
+    end
+  end
+
   describe "#default_db_config" do
     context "when default_db is present" do
       let(:configuration) { Shinq::Configuration.new({}) }
