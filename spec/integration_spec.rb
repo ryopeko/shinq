@@ -3,7 +3,6 @@ require 'shinq'
 require 'shinq/client'
 
 describe "Integration", skip: ENV['TRAVIS'] do
-  let(:queue_table) { 'queue_test' }
 
   before do
     Shinq.configuration = {
@@ -13,28 +12,97 @@ describe "Integration", skip: ENV['TRAVIS'] do
   end
 
   after do
-    Shinq.connection.query("delete from #{queue_table}")
+    Shinq.clear_all_connections! # Return from owner mode
+    tables = Shinq.connection.query('show tables').flat_map(&:values)
+    tables.each do |table|
+      Shinq.connection.query("delete from #{table}")
+    end
+    Shinq.clear_all_connections!
   end
 
   describe "Shinq::Client.enqueue,dequeue" do
-    context "valid args" do
-      let(:args) { {title: 'foo'} }
+    before do
+      Timecop.freeze
+    end
+    after do
+      Timecop.return
+    end
+
+    context 'with scheduled_at on table' do
+      let(:queue_table) { 'queue_test' }
+      let(:job_id) { SecureRandom.uuid }
 
       before do
         Shinq::Client.enqueue(
           table_name: queue_table,
-          job_id: 'jobid',
-          args: args
+          job_id: job_id,
+          args: { title: :foo },
+          scheduled_at: scheduled_at
         )
-
-        @queue = Shinq::Client.dequeue(table_name: queue_table)
-        Shinq::Client.done
       end
 
-      it { expect(@queue[:title]).to eq args[:title] }
+      context 'when scheduled_at is not specified' do
+        let(:scheduled_at) { nil }
+
+        it 'can dequeue immediately' do
+          expect(Shinq::Client.dequeue(table_name: queue_table)[:job_id]).to eq job_id
+        end
+      end
+
+      context 'when scheduled_at is specified' do
+        let(:scheduled_at) { 1.minute.since }
+
+        it 'can not dequeue job immediately' do
+          expect(Shinq::Client.dequeue(table_name: queue_table)).to be nil
+        end
+
+        context 'when specified time elapsed' do
+          before do
+            Timecop.travel(scheduled_at)
+          end
+
+          it 'can dequeue job' do
+            expect(Shinq::Client.dequeue(table_name: queue_table)[:job_id]).to eq job_id
+          end
+        end
+      end
     end
 
-    context "invalid args" do
+    context 'without scheduled_at on table' do
+      let(:job_id) { SecureRandom.uuid }
+      let(:unschedulable_queue_table) { 'queue_test_without_scheduled_at' }
+
+      context 'when scheduled_at is not specified' do
+        before do
+          Shinq::Client.enqueue(
+            table_name: unschedulable_queue_table,
+            job_id: job_id,
+            args: { title: :foo },
+          )
+        end
+
+        it 'can dequeue job' do
+          expect(Shinq::Client.dequeue(table_name: unschedulable_queue_table)[:job_id]).to eq job_id
+        end
+      end
+
+      context 'when scheduled_at is specified' do
+        it 'cannot enqueue job' do
+          expect {
+            Shinq::Client.enqueue(
+              table_name: unschedulable_queue_table,
+              job_id: job_id,
+              args: { title: :foo },
+              scheduled_at: 1.minute.since,
+            )
+          }.to raise_error ArgumentError
+        end
+      end
+    end
+
+
+    context "with invalid args" do
+      let(:queue_table) { 'queue_test' }
       it {
         expect {
           Shinq::Client.enqueue(
@@ -48,6 +116,8 @@ describe "Integration", skip: ENV['TRAVIS'] do
   end
 
   describe "Shinq::Client.abort" do
+    let(:queue_table) { 'queue_test' }
+
     context "When client has a queue" do
       before do
         Shinq::Client.enqueue(
@@ -77,6 +147,8 @@ describe "Integration", skip: ENV['TRAVIS'] do
   end
 
   describe "Shinq::Client.queue_stats" do
+    let(:queue_table) { 'queue_test' }
+
     subject(:stats) {
       Shinq::Client.queue_stats(table_name: queue_table)
     }

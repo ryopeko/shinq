@@ -2,6 +2,10 @@ require 'spec_helper'
 require 'shinq/cli'
 
 describe Shinq::CLI do
+  after do
+    Shinq.clear_all_connections!
+  end
+
   describe '.new' do
     context 'when there are require statement' do
       it 'requires and run the code' do
