@@ -23,7 +23,9 @@ module Shinq
 
     def initialize(opts)
       %i(require worker_name db_config queue_db default_db process queue_timeout daemonize statistics lifecycle abort_on_error).each do |k|
-        send(:"#{k}=", opts[k] || DEFAULT[k])
+
+        value = opts.key?(k) ? opts[k] : DEFAULT[k]
+        send(:"#{k}=", value)
       end
     end
 
