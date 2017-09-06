@@ -12,5 +12,6 @@ rvm:
 gemfile:
   - Gemfile
 before_install:
+  - gem update bundler
   - mysql -e "create database IF NOT EXISTS shinq_test;" -uroot
 script: bundle exec rspec
