@@ -16,21 +16,26 @@ module Shinq
       @loop_count = 0
 
       until @stop
-        queue = Shinq::Client.dequeue(table_name: worker_name.pluralize)
-        next Shinq.logger.info("Queue is empty (#{Time.now})") unless queue
+        begin
+          queue = Shinq::Client.dequeue(table_name: worker_name.pluralize)
+          next Shinq.logger.info("Queue is empty (#{Time.now})") unless queue
 
-        if Shinq.configuration.abort_on_error
-          begin
+          if Shinq.configuration.abort_on_error
             worker_class.new.perform(queue)
-          rescue => e
-            Shinq::Client.abort
-            raise e
+            Shinq::Client.done
+          else
+            Shinq::Client.done
+            worker_class.new.perform(queue)
           end
 
-          Shinq::Client.done
-        else
-          Shinq::Client.done
-          worker_class.new.perform(queue)
+          Shinq.clear_all_connections!
+        rescue => e
+          Shinq.logger.error(format_error_message(e))
+          sleep Shinq.configuration.sleep_sec_on_error
+
+          Shinq::Client.abort if Shinq.configuration.abort_on_error && queue
+          Shinq.clear_all_connections!
+          break
         end
 
         @loop_count += 1
@@ -49,6 +54,17 @@ module Shinq
     def lifecycle_limit?
       return false unless Shinq.configuration.lifecycle
       return (Shinq.configuration.lifecycle < @loop_count)
+    end
+
+    private
+
+    def format_error_message(error)
+      if defined?(::Rails) && ::Rails.backtrace_cleaner
+        backtrace = ::Rails.backtrace_cleaner.clean(error.backtrace || []).presence || error.backtrace
+      else
+        backtrace = error.backtrace
+      end
+      "#{error.message} at #{backtrace.join('  <<<   ')}"
     end
   end
 end

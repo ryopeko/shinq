@@ -73,6 +73,10 @@ module Shinq
           opts[:abort_on_error] = v
         end
 
+        opt.on('--sleep-sec-on-error N', Integer, 'Allow worker to sleep(sec) after exception') do |v|
+          opts[:sleep_sec_on_error] = v
+        end
+
         opt.on('-v', '--version', 'Print version') do |v|
           puts "Shinq #{Shinq::VERSION}"
           exit(0)
