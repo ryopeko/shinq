@@ -10,7 +10,7 @@ module Shinq
   #   You may need to set it +false+ for jobs which take very long time to proceed.
   #   You may also need to handle performing error manually then.
   class Configuration
-    attr_accessor :require, :worker_name, :db_config, :queue_db, :default_db, :process, :graceful_kill_timeout, :queue_timeout, :daemonize, :statistics, :lifecycle, :abort_on_error
+    attr_accessor :require, :worker_name, :db_config, :queue_db, :default_db, :process, :graceful_kill_timeout, :queue_timeout, :daemonize, :statistics, :lifecycle, :abort_on_error, :sleep_sec_on_error
 
     DEFAULT = {
       require: '.',
@@ -18,12 +18,12 @@ module Shinq
       graceful_kill_timeout: 600,
       queue_timeout: 1,
       daemonize: false,
-      abort_on_error: true
+      abort_on_error: true,
+      sleep_sec_on_error: 1,
     }
 
     def initialize(opts)
-      %i(require worker_name db_config queue_db default_db process queue_timeout daemonize statistics lifecycle abort_on_error).each do |k|
-
+      %i(require worker_name db_config queue_db default_db process queue_timeout daemonize statistics lifecycle abort_on_error sleep_sec_on_error).each do |k|
         value = opts.key?(k) ? opts[k] : DEFAULT[k]
         send(:"#{k}=", value)
       end
