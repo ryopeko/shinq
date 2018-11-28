@@ -1,6 +1,14 @@
 module ActiveJob
   module QueueAdapters
     class ShinqAdapter
+      def enqueue(job)
+        self.class.enqueue job
+      end
+
+      def enqueue_at(job, timestamp)
+        self.class.enqueue_at job, timestamp
+      end
+
       class << self
         def enqueue(job)
           Shinq::Client.enqueue(
