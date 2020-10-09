@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "shinq"
-  spec.version       = '1.0.1'
+  spec.version       = '1.0.2'
   spec.authors       = ["Ryoichi SEKIGUCHI"]
   spec.email         = ["ryopeko@gmail.com"]
   spec.summary       = %q{Worker and enqueuer for Q4M using the interface of ActiveJob.}
