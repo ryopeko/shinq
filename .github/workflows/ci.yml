@@ -24,6 +24,11 @@ jobs:
       fail-fast: true
       matrix:
         ruby: [2.4, 2.5, 2.6, 2.7]
+    services:
+      mysql:
+        image: iwata/centos6-mysql56-q4m-hs
+        ports:
+          - 3306:3306
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
