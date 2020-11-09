@@ -10,7 +10,7 @@ require 'mysql2'
 require 'timecop'
 
 def load_database_config
-  db_config = YAML.load_file(File.expand_path('./config/database.yml', __dir__)).symbolize_keys
+  db_config = YAML.load_file(File.expand_path('./config/database.yml', __dir__)).deep_symbolize_keys
 end
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
@@ -36,7 +36,11 @@ RSpec.configure do |config|
     engine = ENV['TRAVIS'] ? 'InnoDB' : 'QUEUE' # Travis MySQL does not have Q4M plugins.
     sql = ERB.new(File.read(File.expand_path('./db/structure.sql.erb', __dir__))).result(binding)
 
-    connection = Mysql2::Client.new(load_database_config[:test].merge(flags: Mysql2::Client::MULTI_STATEMENTS))
+    config_for_setup = load_database_config[:test]
+      .except(:database) # To create database
+      .merge(flags: Mysql2::Client::MULTI_STATEMENTS)
+
+    connection = Mysql2::Client.new(config_for_setup)
     result = connection.query(sql)
 
     while connection.next_result
