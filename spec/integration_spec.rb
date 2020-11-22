@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'shinq'
 require 'shinq/client'
 
-describe "Integration", skip: ENV['TRAVIS'] do
+describe "Integration" do
 
   before do
     Shinq.configuration = {
