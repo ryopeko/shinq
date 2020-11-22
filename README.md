@@ -1,5 +1,5 @@
 # Shinq
-[![Build Status](https://travis-ci.org/ryopeko/shinq.svg)](https://travis-ci.org/ryopeko/shinq)
+
 [![CI](https://github.com/ryopeko/shinq/workflows/test/badge.svg?event=push)](https://github.com/ryopeko/shinq/actions?query=workflow%3Atest+event%3Apush)
 
 Worker and enqueuer for Q4M using the interface of ActiveJob.
