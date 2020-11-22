@@ -31,10 +31,7 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    # MySQL on Travis does not have Q4M plugins.
-    # We use QUEUE engine and run Q4M specific spec (integration_spec) only when ENV['TRAVIS'] is nil.
-    engine = ENV['TRAVIS'] ? 'InnoDB' : 'QUEUE' # Travis MySQL does not have Q4M plugins.
-    sql = ERB.new(File.read(File.expand_path('./db/structure.sql.erb', __dir__))).result(binding)
+    sql = Pathname('./db/structure.sql').expand_path(__dir__).read
 
     config_for_setup = load_database_config[:test]
       .except(:database) # To create database
