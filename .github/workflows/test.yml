@@ -25,7 +25,23 @@ jobs:
       max-parallel: 4
       fail-fast: true
       matrix:
-        ruby: [2.4, 2.5, 2.6, 2.7]
+        # In order to effectively specify Rails and Ruby versions simultaneously,
+        # we specify every tuple of versions in `include` section
+        # except for the tuples with a particular Rails version.
+        # The objective of the exception is to satisfy the
+        # constraint that a matrix cannot be empty.
+        gemfile: [gemfiles/rails_5.gemfile]
+        ruby: ['2.5', '2.6']
+        include:
+          - gemfile: gemfiles/rails_6.0.gemfile
+            ruby: '2.5'
+          - gemfile: gemfiles/rails_6.0.gemfile
+            ruby: '2.6'
+          - gemfile: gemfiles/rails_6.0.gemfile
+            ruby: '2.7'
+
+    env:
+      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
     services:
       mysql:
         image: iwata/centos6-mysql56-q4m-hs
