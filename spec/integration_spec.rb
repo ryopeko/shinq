@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'shinq'
 require 'shinq/client'
+require 'securerandom'
 
 describe "Integration" do
 
