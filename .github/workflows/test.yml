@@ -34,7 +34,7 @@ jobs:
         #
         # We test only the oldest and latest Ruby versions for each Rails version.
         gemfile: [gemfiles/rails_5.gemfile]
-        ruby: ['2.2', '2.6']
+        ruby: ['2.3', '2.6']
         include:
           - gemfile: gemfiles/rails_6.0.gemfile
             ruby: '2.5'
