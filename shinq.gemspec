@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rake"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "tapp"
   spec.add_development_dependency "rspec"
@@ -25,9 +25,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "timecop"
   spec.add_development_dependency "appraisal"
 
-  spec.add_dependency "mysql2", ">= 0.3.16", "< 0.6"
-  spec.add_dependency "sql-maker", "~> 0.0.4"
+  spec.add_dependency "mysql2", ">= 0.3.16", "< 1"
+  spec.add_dependency "sql-maker", ">= 0.0.4", "< 2"
+  spec.add_dependency 'serverengine', ">= 1.5.9", "< 3"
+
   spec.add_dependency "activesupport", ">= 4.2.0", "< 7.1"
   spec.add_dependency "activejob", ">= 4.2.0", "< 7.1"
-  spec.add_dependency 'serverengine', '~> 1.5.9'
 end
