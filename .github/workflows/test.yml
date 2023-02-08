@@ -28,17 +28,26 @@ jobs:
         # In order to effectively specify Rails and Ruby versions simultaneously,
         # we specify every tuple of versions in `include` section
         # except for the tuples with a particular Rails version.
+        #
         # The objective of the exception is to satisfy the
         # constraint that a matrix cannot be empty.
+        #
+        # We test only the oldest and latest Ruby versions for each Rails version.
         gemfile: [gemfiles/rails_5.gemfile]
-        ruby: ['2.5', '2.6']
+        ruby: ['2.2', '2.6']
         include:
           - gemfile: gemfiles/rails_6.0.gemfile
             ruby: '2.5'
           - gemfile: gemfiles/rails_6.0.gemfile
-            ruby: '2.6'
-          - gemfile: gemfiles/rails_6.0.gemfile
             ruby: '2.7'
+          - gemfile: gemfiles/rails_6.1.gemfile
+            ruby: '2.5'
+          - gemfile: gemfiles/rails_6.1.gemfile
+            ruby: '3.2'
+          - gemfile: gemfiles/rails_7.0.gemfile
+            ruby: '2.7'
+          - gemfile: gemfiles/rails_7.0.gemfile
+            ruby: '3.2'
 
     env:
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
