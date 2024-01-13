@@ -36,11 +36,11 @@ module Shinq
       wait_query = "queue_wait(#{quoted}, #{queue_timeout_quoted})"
       has_queue = Shinq.connection.query("select #{wait_query}").first
 
-      unless has_queue[wait_query].to_i == 0
+      unless has_queue[0].to_i == 0
         sql = builder.select(table_name, ['*'])
         results = Shinq.connection.query(sql)
         # select always returns 1 line in the owner (queue_wait) mode
-        return results.first.symbolize_keys
+        return results.fields.map(&:to_sym).zip(results.each.first).to_h
       end
     end
 
@@ -50,7 +50,7 @@ module Shinq
       stats_query = "queue_stats(#{quoted})"
       result = Shinq.connection.query("select #{stats_query}")
 
-      stats = result.first[stats_query].split(/\n/).each_with_object({}) do |s, h|
+      stats = result.first[0].split(/\n/).each_with_object({}) do |s, h|
         (k,v) = s.split(/:/)
         h[k.to_sym] = v.to_i
       end
@@ -68,7 +68,7 @@ module Shinq
       @column_names_by_table_name ||= {}
       @column_names_by_table_name[table_name.to_sym] ||= begin
         quoted = SQL::Maker::Quoting.quote(table_name)
-        column = Shinq.connection.query(<<-EOS).map { |record| record['column_name'] }
+        column = Shinq.connection.query(<<-EOS).map { |record| record[0] }
 select column_name as column_name from information_schema.columns where table_schema = database() and table_name = #{quoted}
         EOS
       end

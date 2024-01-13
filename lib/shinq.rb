@@ -24,7 +24,7 @@ module Shinq
 
   def self.setup_db_connection(db_name)
     raise Shinq::ConfigurationError unless self.configuration.db_defined?(db_name)
-    @connections[db_name.to_sym] = Mysql2::Client.new(self.configuration.db_config[db_name])
+    @connections[db_name.to_sym] = Mysql2::Client.new(self.configuration.db_config[db_name].merge(as: :array))
   end
 
   def self.connection(db_name: self.default_db)
