@@ -11,8 +11,8 @@ require 'active_support/core_ext/numeric/time'
 require 'mysql2'
 require 'timecop'
 
-def load_database_config
-  db_config = YAML.load_file(File.expand_path('./config/database.yml', __dir__)).deep_symbolize_keys
+def load_database_config(adapter: ENV.fetch('SHINQ_TEST_ADAPTER', 'trilogy'))
+  YAML.load_file(File.expand_path('./config/database.yml', __dir__)).deep_symbolize_keys.deep_merge(test: { adapter: adapter })
 end
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(

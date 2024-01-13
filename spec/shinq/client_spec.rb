@@ -34,13 +34,13 @@ describe Shinq::Client do
 
   describe '.column_names' do
     it 'fetches column_names' do
-      expect(shinq_client.column_names(table_name: :queue_test)).to eq(['job_id', 'title', 'scheduled_at', 'enqueued_at'])
+      expect(shinq_client.column_names(table_name: :queue_test).sort).to eq(['job_id', 'title', 'scheduled_at', 'enqueued_at'].sort)
     end
   end
 
   describe 'fetch_column_names' do
     it 'fetches column_names' do
-      expect(shinq_client.fetch_column_names(table_name: :queue_test)).to eq(['job_id', 'title', 'scheduled_at', 'enqueued_at'])
+      expect(shinq_client.fetch_column_names(table_name: :queue_test).sort).to eq(['job_id', 'title', 'scheduled_at', 'enqueued_at'].sort)
     end
   end
 end

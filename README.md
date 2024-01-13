@@ -6,9 +6,10 @@ Worker and enqueuer for Q4M using the interface of ActiveJob.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add these lines to your application's Gemfile:
 
 ```ruby
+gem 'mysql2' # or gem 'trilogy'
 gem 'shinq'
 ```
 
@@ -18,7 +19,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install shinq
+    $ gem install mysql2 && gem install shinq
 
 [Install Q4M](http://q4m.github.io/install.html)
 

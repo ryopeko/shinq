@@ -64,7 +64,14 @@ describe Shinq do
 
       it do
         shinq.connection(db_name: :test)
-        expect(shinq.connection(db_name: :test)).to be_a_kind_of(Mysql2::Client)
+        case shinq.configuration.default_db_config[:adapter]
+        when 'mysql2'
+          expect(shinq.connection(db_name: :test)).to be_a_kind_of(Mysql2::Client)
+        when 'trilogy'
+          expect(shinq.connection(db_name: :test)).to be_a_kind_of(Trilogy)
+        else
+          raise "Unexpected adapter: #{shinq.configuration.default_db_config[:adapter]}"
+        end
       end
     end
   end
@@ -83,7 +90,17 @@ describe Shinq do
 
       it 'closes connection' do
         shinq.clear_all_connections!
-        expect(connection.ping).to be false
+
+        # Trilogy raises an exception while mysql2 returns false
+        # see: https://github.com/trilogy-libraries/trilogy/pull/145
+        case shinq.configuration.default_db_config[:adapter]
+        when 'trilogy'
+          expect { connection.ping }.to raise_error Trilogy::ConnectionClosed
+        when 'mysql2'
+          expect(connection.ping).to eq false
+        else
+          raise "Unexpected adapter: #{shinq.configuration.default_db_config[:adapter]}"
+        end
       end
 
       it 'clears connection cache' do

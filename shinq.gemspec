@@ -26,8 +26,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "timecop"
   spec.add_development_dependency "appraisal"
+  spec.add_development_dependency "trilogy"
+  spec.add_development_dependency "mysql2"
 
-  spec.add_dependency "mysql2", ">= 0.3.16", "< 1"
   spec.add_dependency "sql-maker", ">= 0.0.4", "< 2"
   spec.add_dependency 'serverengine', ">= 1.5.9", "< 3"
 
