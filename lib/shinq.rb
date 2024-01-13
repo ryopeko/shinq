@@ -23,7 +23,7 @@ module Shinq
   end
 
   def self.setup_db_connection(db_name)
-    raise Shinq::ConfigurationError unless self.configuration.db_defined?(db_name)
+    raise Shinq::ConfigurationError, "#{db_name.inspect} is not defined in configuration" unless self.configuration.db_defined?(db_name)
     @connections[db_name.to_sym] = Mysql2::Client.new(self.configuration.db_config[db_name].merge(as: :array))
   end
 
