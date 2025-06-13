@@ -29,7 +29,7 @@ module Shinq
       case db_config[:adapter]
       when 'trilogy'
         require 'trilogy'
-        Trilogy.new(db_config)
+        Trilogy.new(db_config.dup)
       when 'mysql2', nil # for backward compatibility, we use mysql2 when adapter is not specified
         require 'mysql2'
         Mysql2::Client.new(db_config.merge(as: :array))
