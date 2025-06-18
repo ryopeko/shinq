@@ -1,4 +1,3 @@
-require 'mysql2'
 require 'shinq/client'
 require 'shinq/configuration'
 
@@ -23,8 +22,20 @@ module Shinq
   end
 
   def self.setup_db_connection(db_name)
-    raise Shinq::ConfigurationError unless self.configuration.db_defined?(db_name)
-    @connections[db_name.to_sym] = Mysql2::Client.new(self.configuration.db_config[db_name])
+    raise Shinq::ConfigurationError, "#{db_name.inspect} is not defined in configuration" unless self.configuration.db_defined?(db_name)
+
+    db_config = self.configuration.db_config[db_name]
+    @connections[db_name.to_sym] =
+      case db_config[:adapter]
+      when 'trilogy'
+        require 'trilogy'
+        Trilogy.new(db_config.dup)
+      when 'mysql2', nil # for backward compatibility, we use mysql2 when adapter is not specified
+        require 'mysql2'
+        Mysql2::Client.new(db_config.merge(as: :array))
+      else
+        raise "Unsupported adapter: #{db_config[:adapter]}. Only trilogy and mysql2 are supported."
+      end
   end
 
   def self.connection(db_name: self.default_db)

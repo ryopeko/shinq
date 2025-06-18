@@ -14,7 +14,7 @@ describe "Integration" do
 
   after do
     Shinq.clear_all_connections! # Return from owner mode
-    tables = Shinq.connection.query('show tables').flat_map(&:values)
+    tables = Shinq.connection.query('show tables').to_a.flatten
     tables.each do |table|
       Shinq.connection.query("delete from #{table}")
     end
@@ -127,12 +127,12 @@ describe "Integration" do
           args: {title: 'foo'}
         )
 
-        @queue_count = Shinq.connection.query("select count(*) as c from #{queue_table}").first['c']
+        @queue_count = Shinq.connection.query("select count(*) as c from #{queue_table}").first.first
 
         Shinq::Client.dequeue(table_name: queue_table)
         Shinq::Client.abort
 
-        @after_queue_count = Shinq.connection.query("select count(*) as c from #{queue_table}").first['c']
+        @after_queue_count = Shinq.connection.query("select count(*) as c from #{queue_table}").first.first
       end
 
       it { expect(@after_queue_count).to be @queue_count }
