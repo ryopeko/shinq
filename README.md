@@ -19,7 +19,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install mysql2 && gem install shinq
+    $ gem install mysql2 shinq
 
 [Install Q4M](http://q4m.github.io/install.html)
 
