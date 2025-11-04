@@ -48,7 +48,7 @@ jobs:
       BUNDLE_GEMFILE: ${{ matrix.ruby_gemfile.gemfile }}
     services:
       mysql:
-        image: iwata/centos6-mysql56-q4m-hs
+        image: ghcr.io/dena/ubuntu22-mysql-q4m:8.0.28-6bc571978335b6304566c8df4a5ff7e2b2d9911f
         ports:
           - 3306:3306
     steps:
