@@ -25,22 +25,30 @@ jobs:
       matrix:
         # We test only the oldest and latest Ruby versions for each Rails version.
         ruby_gemfile:
-          - gemfile: gemfiles/rails_5.gemfile
-            ruby: '2.3'
-          - gemfile: gemfiles/rails_5.gemfile
-            ruby: '2.6'
-          - gemfile: gemfiles/rails_6.0.gemfile
-            ruby: '2.5'
-          - gemfile: gemfiles/rails_6.0.gemfile
-            ruby: '2.7'
-          - gemfile: gemfiles/rails_6.1.gemfile
-            ruby: '2.5'
-          - gemfile: gemfiles/rails_6.1.gemfile
-            ruby: '3.2'
           - gemfile: gemfiles/rails_7.0.gemfile
             ruby: '2.7'
           - gemfile: gemfiles/rails_7.0.gemfile
+            ruby: '3.3'
+
+          - gemfile: gemfiles/rails_7.1.gemfile
+            ruby: '2.7'
+          - gemfile: gemfiles/rails_7.1.gemfile
+            ruby: '3.4'
+
+          - gemfile: gemfiles/rails_7.2.gemfile
+            ruby: '3.1'
+          - gemfile: gemfiles/rails_7.2.gemfile
+            ruby: '3.4'
+
+          - gemfile: gemfiles/rails_8.0.gemfile
             ruby: '3.2'
+          - gemfile: gemfiles/rails_8.0.gemfile
+            ruby: '3.4'
+
+          - gemfile: gemfiles/rails_8.1.gemfile
+            ruby: '3.2'
+          - gemfile: gemfiles/rails_8.1.gemfile
+            ruby: '3.4'
         adapter:
           - trilogy
           - mysql2
