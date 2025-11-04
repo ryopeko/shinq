@@ -25,22 +25,30 @@ jobs:
       matrix:
         # We test only the oldest and latest Ruby versions for each Rails version.
         ruby_gemfile:
-          - gemfile: gemfiles/rails_5.gemfile
-            ruby: '2.3'
-          - gemfile: gemfiles/rails_5.gemfile
-            ruby: '2.6'
-          - gemfile: gemfiles/rails_6.0.gemfile
-            ruby: '2.5'
-          - gemfile: gemfiles/rails_6.0.gemfile
-            ruby: '2.7'
-          - gemfile: gemfiles/rails_6.1.gemfile
-            ruby: '2.5'
-          - gemfile: gemfiles/rails_6.1.gemfile
-            ruby: '3.2'
           - gemfile: gemfiles/rails_7.0.gemfile
             ruby: '2.7'
           - gemfile: gemfiles/rails_7.0.gemfile
+            ruby: '3.3'
+
+          - gemfile: gemfiles/rails_7.1.gemfile
+            ruby: '2.7'
+          - gemfile: gemfiles/rails_7.1.gemfile
+            ruby: '3.4'
+
+          - gemfile: gemfiles/rails_7.2.gemfile
+            ruby: '3.1'
+          - gemfile: gemfiles/rails_7.2.gemfile
+            ruby: '3.4'
+
+          - gemfile: gemfiles/rails_8.0.gemfile
             ruby: '3.2'
+          - gemfile: gemfiles/rails_8.0.gemfile
+            ruby: '3.4'
+
+          - gemfile: gemfiles/rails_8.1.gemfile
+            ruby: '3.2'
+          - gemfile: gemfiles/rails_8.1.gemfile
+            ruby: '3.4'
         adapter:
           - trilogy
           - mysql2
@@ -48,7 +56,8 @@ jobs:
       BUNDLE_GEMFILE: ${{ matrix.ruby_gemfile.gemfile }}
     services:
       mysql:
-        image: iwata/centos6-mysql56-q4m-hs
+        # https://github.com/DeNA/ubuntu22-mysql-q4m
+        image: ghcr.io/dena/ubuntu22-mysql-q4m:8.0.28-6bc571978335b6304566c8df4a5ff7e2b2d9911f
         ports:
           - 3306:3306
     steps:

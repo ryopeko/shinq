@@ -32,6 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "sql-maker", ">= 0.0.4", "< 2"
   spec.add_dependency 'serverengine', ">= 1.5.9", "< 3"
 
-  spec.add_dependency "activesupport", ">= 4.2.0", "< 7.1"
-  spec.add_dependency "activejob", ">= 4.2.0", "< 7.1"
+  spec.add_dependency "activesupport", ">= 4.2.0"
+  spec.add_dependency "activejob", ">= 4.2.0"
 end

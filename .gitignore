@@ -12,4 +12,5 @@
 *.so
 *.o
 *.a
+/.idea/
 mkmf.log
